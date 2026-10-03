@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Casa Nova | Giovanna & Caio ❤️</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        espresso: '#2C221E',
+                        amber: '#D96B27',
+                        sunflower: '#F4B236',
+                        honey: '#F7C948',
+                        honeysoft: '#FFF5D6',
+                        taupe: '#7D6E65',
+                        sand: '#EAE1D8',
+                        cream: '#FAF6F0',
+                        warmwhite: '#FFFDF9',
+                        sage: '#48785E',
+                        sagesoft: '#E8F2EC'
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #FAF4EB;
+            color: #382A21;
+        }
+        .font-serif-title { font-family: 'Playfair Display', serif; }
+        
+        .gift-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .gift-card:hover { transform: translateY(-4px); }
+
+        .card-claimed-guest {
+            background: linear-gradient(135deg, #FFFDF9 0%, #FDF3D8 100%);
+            border-color: #E5A638 !important;
+        }
+
+        .card-claimed-noivos {
+            background: linear-gradient(135deg, #FAF4EB 0%, #EADBCE 100%);
+            border-color: #8C7B70 !important;
+        }
+
+        ::-webkit-scrollbar { height: 6px; width: 6px; }
+        ::-webkit-scrollbar-track { background: #FAF4EB; }
+        ::-webkit-scrollbar-thumb { background: #EADBCE; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E5A638; }
+
+        .glass-panel {
+            background: rgba(255, 253, 249, 0.92);
+            backdrop-filter: blur(12px);
+        }
+
+        .sun-gradient-btn {
+            background: linear-gradient(135deg, #E5A638 0%, #C86818 100%);
+        }
+        .sun-gradient-btn:hover {
+            background: linear-gradient(135deg, #F5C252 0%, #E5A638 100%);
+        }
+    </style>
+</head>
+<body class="min-h-full flex flex-col antialiased selection:bg-sunflower selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full px-4"></div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-30 glass-panel border-b border-sand/80 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand / Couple Names -->
+            <div class="flex items-center space-x-3.5">
+                <div class="relative">
+                    <img src="foto-casal.jpg" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-11 h-11 rounded-full bg-honeysoft text-amber flex items-center justify-center font-serif-title font-bold text-lg shadow-inner border border-sunflower/40\'><i class=\'fa-solid fa-house-heart\'></i></div>'" 
+                        alt="Giovanna & Caio" 
+                        class="w-11 h-11 rounded-full object-cover border-2 border-sunflower shadow-sm">
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-serif-title font-bold text-espresso leading-none flex items-center gap-2">
+                        <i class="fa-solid fa-house text-amber text-lg sm:text-xl"></i>
+                        <span>Lista Casa Nova<span class="text-amber">❤️</span></span>
+                    </h1>
+                    <p class="text-xs text-taupe font-medium mt-1">Giovanna & Caio</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="copyShareLink()" class="inline-flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-bold text-espresso bg-honeysoft hover:bg-honey/40 border border-sunflower/40 rounded-full transition-all shadow-sm">
+                    <i class="fa-solid fa-share-nodes text-amber"></i>
+                    <span class="hidden sm:inline">Compartilhar</span>
+                </button>
+
+                <!-- Secret Admin Toggle Button -->
+                <button id="admin-toggle-btn" onclick="toggleAdminPrompt()" class="inline-flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-medium text-taupe hover:text-espresso hover:bg-sand/40 rounded-full transition-all" title="Área Restrita dos Noivos">
+                    <i id="admin-icon" class="fa-solid fa-lock"></i>
+                    <span id="admin-btn-text" class="hidden md:inline">Modo Noivos</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+        <!-- Hero Banner with Pre-wedding Photo -->
+        <div class="relative overflow-hidden rounded-3xl bg-espresso text-warmwhite shadow-xl">
+            <div class="absolute inset-0 z-0">
+                <img src="foto-capa.jpg" onerror="this.style.display='none'" alt="Prewedding Giovanna & Caio" class="w-full h-full object-cover opacity-45">
+                <div class="absolute inset-0 bg-gradient-to-r from-espresso via-espresso/80 to-amber/30"></div>
+            </div>
+
+            <div class="relative z-10 p-8 sm:p-12 md:p-16 max-w-3xl space-y-5">
+                <span class="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-bold uppercase tracking-wider bg-sunflower text-espresso rounded-full backdrop-blur-md shadow-md">
+                    <i class="fa-solid fa-house text-espresso"></i> Nossa Casa Nova
+                </span>
+                
+                <h2 class="text-3xl sm:text-5xl font-serif-title font-bold leading-tight text-warmwhite">
+                    Giovanna & Caio
+                </h2>
+
+                <p class="text-sand/90 text-sm sm:text-base leading-relaxed font-light">
+                    Sejam bem-vindos à nossa lista de enxoval e itens para a nossa casa nova! Criamos este cantinho alegre e especial para compartilhar cada detalhe da nossa conquista. Fiquem à vontade para escolher um item e nos presentear!
+                </p>
+
+                <!-- Global Progress Bar -->
+                <div class="pt-4 max-w-md">
+                    <div class="flex justify-between text-xs font-medium text-honeysoft mb-2">
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-sparkles text-sunflower"></i> Conquistas da Casa Nova</span>
+                        <span id="gifts-progress-text">0 de 0 Garantidos (0%)</span>
+                    </div>
+                    <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden p-0.5 backdrop-blur-sm border border-white/20">
+                        <div id="gifts-progress-bar" class="bg-gradient-to-r from-sunflower to-honey h-full rounded-full transition-all duration-700 shadow-sm" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UX GUIDE SECTION: Como Funciona para os Convidados -->
+        <section class="bg-warmwhite border border-sand rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+            <div class="flex items-center gap-3 border-b border-sand/60 pb-4">
+                <div class="w-10 h-10 rounded-2xl bg-honeysoft text-amber border border-sunflower/30 flex items-center justify-center text-lg font-bold">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-serif-title font-bold text-espresso">Como funciona a nossa lista?</h3>
+                    <p class="text-xs text-taupe">Super simples em apenas 3 passos:</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Step 1 -->
+                <div class="flex items-start gap-4 p-4 rounded-2xl bg-cream border border-sand/60">
+                    <span class="w-8 h-8 rounded-full bg-amber text-white font-bold flex items-center justify-center text-sm flex-shrink-0 shadow-sm">1</span>
+                    <div>
+                        <h4 class="font-bold text-sm text-espresso mb-1">Escolha um Item</h4>
+                        <p class="text-xs text-taupe leading-relaxed">Navegue pelas categorias da casa (Cozinha, Quarto, Eletro, etc.) e encontre o presente que deseja dar.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex items-start gap-4 p-4 rounded-2xl bg-cream border border-sand/60">
+                    <span class="w-8 h-8 rounded-full bg-sunflower text-espresso font-bold flex items-center justify-center text-sm flex-shrink-0 shadow-sm">2</span>
+                    <div>
+                        <h4 class="font-bold text-sm text-espresso mb-1">Compre onde Preferir</h4>
+                        <p class="text-xs text-taupe leading-relaxed">Deixamos um link de sugestão de loja, mas você pode comprar o item na loja ou site da sua preferência.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="flex items-start gap-4 p-4 rounded-2xl bg-cream border border-sand/60">
+                    <span class="w-8 h-8 rounded-full bg-espresso text-warmwhite font-bold flex items-center justify-center text-sm flex-shrink-0 shadow-sm">3</span>
+                    <div>
+                        <h4 class="font-bold text-sm text-espresso mb-1">Clique em "Comprei"</h4>
+                        <p class="text-xs text-taupe leading-relaxed">Confirme no botão do item e coloque seu nome para sabermos que já ganhamos e evitar presentes repetidos!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DELIVERY ADDRESS SECTION -->
+        <section class="bg-warmwhite border border-sand rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-sand/60 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-honeysoft text-amber border border-sunflower/30 flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-truck-ramp-box"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-serif-title font-bold text-espresso">Endereço de Entrega dos Noivos 📦</h3>
+                        <p class="text-xs text-taupe">Para familiares e amigos que preferirem enviar o presente direto para o nosso apartamento!</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button id="edit-address-btn" onclick="openAddressModal()" class="hidden inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-bold text-warmwhite bg-espresso hover:bg-taupe rounded-2xl transition shadow-sm">
+                        <i class="fa-solid fa-pen-to-square text-sunflower"></i>
+                        <span>Editar Endereço</span>
+                    </button>
+                    <button onclick="copyAddressToClipboard('full')" class="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-espresso bg-honeysoft hover:bg-honey/40 border border-sunflower/40 rounded-2xl transition shadow-sm">
+                        <i class="fa-solid fa-copy text-amber"></i>
+                        <span>Copiar Endereço Completo</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Address Display & Discrete Copy Buttons -->
+            <div id="delivery-address-box" class="bg-cream/80 border border-sand/60 rounded-2xl p-4 sm:p-5 text-xs sm:text-sm text-espresso space-y-2.5 font-medium">
+                <div class="flex items-center justify-between gap-2 border-b border-sand/30 pb-2">
+                    <p class="font-bold text-amber flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot"></i> Destinatários: <span id="disp-recipient">Giovanna & Caio</span>
+                    </p>
+                    <button onclick="copyAddressField('recipient', 'Destinatários')" class="text-taupe/60 hover:text-amber p-1 text-xs transition-colors flex-shrink-0" title="Copiar Destinatários">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-between gap-2 border-b border-sand/30 pb-2">
+                    <p id="disp-street-and-num" class="font-bold text-espresso">Endereço a definir</p>
+                    <button onclick="copyAddressField('street_and_num', 'Endereço')" class="text-taupe/60 hover:text-amber p-1 text-xs transition-colors flex-shrink-0" title="Copiar Endereço">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-between gap-2 border-b border-sand/30 pb-2">
+                    <p id="disp-neighborhood" class="text-espresso"></p>
+                    <button onclick="copyAddressField('neighborhood', 'Bairro e Cidade')" class="text-taupe/60 hover:text-amber p-1 text-xs transition-colors flex-shrink-0" title="Copiar Bairro e Cidade">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-between gap-2 pb-1">
+                    <p class="text-taupe">CEP: <span id="disp-cep" class="font-semibold text-espresso">-</span></p>
+                    <button onclick="copyAddressField('cep', 'CEP')" class="text-taupe/60 hover:text-amber p-1 text-xs transition-colors flex-shrink-0" title="Copiar CEP">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+
+                <div class="pt-2.5 border-t border-sand/50 flex items-center gap-2 text-[11px] text-amber font-medium">
+                    <i class="fa-solid fa-lightbulb flex-shrink-0"></i>
+                    <span><strong>Dica para compras online:</strong> Cole este endereço no campo de entrega do site onde for comprar!</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discreet Expense Tracker (VISIBLE ONLY IN NOIVOS / ADMIN MODE) -->
+        <section id="discreet-finance-panel" class="hidden transition-all duration-500">
+            <div class="bg-espresso text-warmwhite rounded-3xl p-6 sm:p-8 shadow-2xl border border-sunflower/30 relative overflow-hidden space-y-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-sand/20 gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 bg-sunflower/20 text-sunflower rounded-2xl border border-sunflower/30">
+                            <i class="fa-solid fa-wallet text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-serif-title font-bold text-warmwhite flex items-center gap-2">
+                                Painel Financeiro dos Noivos
+                                <span class="text-[10px] font-sans font-semibold px-2.5 py-0.5 rounded-full bg-sunflower/20 text-honey border border-sunflower/30">Restrito</span>
+                            </h3>
+                            <p class="text-xs text-sand/70">Apenas Giovanna & Caio têm acesso a este controle de gastos.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <button onclick="openAddItemModal()" class="w-full sm:w-auto px-5 py-2.5 text-xs font-bold text-espresso bg-sunflower hover:bg-honey rounded-2xl transition shadow-md flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>+ Adicionar Item</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Discreet Counters Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white/5 border border-sand/20 rounded-2xl p-4">
+                        <p class="text-xs text-sand/70 font-medium">Total Estimado Lista</p>
+                        <p id="stat-total-estimated" class="text-lg sm:text-xl font-bold text-warmwhite mt-1">R$ 0,00</p>
+                    </div>
+
+                    <div class="bg-white/5 border border-sunflower/30 rounded-2xl p-4">
+                        <p class="text-xs text-sunflower font-medium">Comprado pelos Noivos</p>
+                        <p id="stat-bought-noivos" class="text-lg sm:text-xl font-bold text-warmwhite mt-1">R$ 0,00</p>
+                        <span id="stat-count-noivos" class="text-[10px] text-sand/60">0 itens</span>
+                    </div>
+
+                    <div class="bg-white/5 border border-sand/20 rounded-2xl p-4">
+                        <p class="text-xs text-sand/90 font-medium">Ganhos de Presente</p>
+                        <p id="stat-gifted-guests" class="text-lg sm:text-xl font-bold text-warmwhite mt-1">R$ 0,00</p>
+                        <span id="stat-count-guests" class="text-[10px] text-sand/60">0 presentes</span>
+                    </div>
+
+                    <div class="bg-white/5 border border-sand/20 rounded-2xl p-4">
+                        <p class="text-xs text-sand/70 font-medium">Investimento Real Noivos</p>
+                        <p id="stat-total-actual-spent" class="text-lg sm:text-xl font-bold text-warmwhite mt-1">R$ 0,00</p>
+                        <span class="text-[10px] text-sand/60">Valor total pago do bolso</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Controls & Filter Toolbar -->
+        <div class="space-y-4">
+            <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+                <!-- Search Bar -->
+                <div class="relative w-full sm:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-taupe text-sm"></i>
+                    <input type="text" id="search-input" placeholder="Buscar presente..." 
+                        class="w-full pl-11 pr-4 py-3 bg-warmwhite border border-sand rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-sunflower/40 focus:border-sunflower shadow-sm transition">
+                </div>
+
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                    <!-- Quick Add Button (Visible in Modo Noivos) -->
+                    <button id="quick-add-btn" onclick="openAddItemModal()" class="hidden px-4 py-2.5 text-xs font-bold text-espresso bg-sunflower hover:bg-honey rounded-2xl transition shadow-sm items-center gap-1.5">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>+ Novo Item</span>
+                    </button>
+
+                    <!-- Status Filter Badges -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+                        <button onclick="setStatusFilter('all')" id="filter-status-all" class="status-filter-btn active-status-filter px-4 py-2 text-xs font-bold rounded-full border border-amber bg-amber text-warmwhite transition">
+                            Todos (<span id="count-status-all">0</span>)
+                        </button>
+                        <button onclick="setStatusFilter('available')" id="filter-status-available" class="status-filter-btn px-4 py-2 text-xs font-semibold rounded-full border border-sand bg-warmwhite text-espresso hover:bg-honeysoft transition">
+                            Disponíveis (<span id="count-status-available">0</span>)
+                        </button>
+                        <button onclick="setStatusFilter('claimed')" id="filter-status-claimed" class="status-filter-btn px-4 py-2 text-xs font-semibold rounded-full border border-sand bg-warmwhite text-espresso hover:bg-honeysoft transition">
+                            Ganhos (<span id="count-status-claimed">0</span>)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Scrollable Bar -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2" id="categories-tabs-container">
+                <!-- Tabs dynamically rendered -->
+            </div>
+        </div>
+
+        <!-- Gift Cards Grid -->
+        <div id="gifts-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Gift items injected by JS -->
+        </div>
+
+        <!-- Empty State View -->
+        <div id="empty-state" class="hidden py-16 text-center space-y-4">
+            <div class="w-20 h-20 bg-honeysoft text-amber rounded-full flex items-center justify-center mx-auto text-3xl border border-sunflower/30">
+                <i class="fa-solid fa-box-open"></i>
+            </div>
+            <h3 class="text-lg font-serif-title font-bold text-espresso">Nenhum item encontrado</h3>
+            <p class="text-taupe text-xs max-w-md mx-auto">Sua lista está limpa ou a busca não encontrou resultados.</p>
+        </div>
+
+        <!-- Prewedding Photo & Thank You Card -->
+        <section class="bg-honeysoft/60 border border-sunflower/30 rounded-3xl p-8 text-center space-y-4 shadow-sm">
+            <div class="max-w-xl mx-auto space-y-3">
+                <span class="text-amber text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-heart"></i> Giovanna & Caio
+                </span>
+                <h3 class="text-2xl font-serif-title font-bold text-espresso">Obrigado por fazer parte da nossa jornada!</h3>
+                <p class="text-xs text-taupe leading-relaxed">
+                    Cada detalhe da nossa casa está sendo pensado com muito amor, carinho e alegria. A sua presença e carinho na nossa vida são os nossos maiores presentes!
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-warmwhite border-t border-sand mt-16 py-8 text-center text-xs text-taupe">
+        <div class="max-w-7xl mx-auto px-4 space-y-3">
+            <p class="font-serif-title text-sm font-bold text-espresso">Giovanna & Caio ❤️ Lista Casa Nova</p>
+            <p class="text-[11px] text-taupe/80">Os links das lojas são apenas sugestões. Fique totalmente à vontade para adquirir onde preferir.</p>
+            <div id="sync-status-badge" class="pt-2 flex items-center justify-center gap-2 text-[11px] font-medium text-taupe">
+                <span class="w-2 h-2 rounded-full bg-sunflower inline-block animate-pulse"></span>
+                <span>Conectando ao banco de dados...</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL 1: Claim Gift Modal -->
+    <div id="gift-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-espresso/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-warmwhite rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-300 space-y-6 border border-sand">
+            <div class="flex items-center justify-between border-b pb-4 border-sand/60">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-honeysoft text-amber border border-sunflower/30 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-gift"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif-title font-bold text-lg text-espresso">Presentear Giovanna & Caio</h3>
+                        <p class="text-xs text-taupe">Confirme a escolha deste item!</p>
+                    </div>
+                </div>
+                <button onclick="closeGiftModal()" class="text-taupe hover:text-espresso p-2 text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="modal-item-info" class="bg-cream p-4 rounded-2xl border border-sand/60 flex items-center gap-4"></div>
+
+            <form id="gift-form" onsubmit="handleClaimSubmit(event)" class="space-y-4">
+                <input type="hidden" id="claim-item-id">
+                
+                <div>
+                    <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-2">Quem está dando este presente? *</label>
+                    <input type="text" id="buyer-name-input" required placeholder="Digite seu nome (ex: Titia Maria, Amigo Lucas)" 
+                        class="w-full px-4 py-3 bg-white border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-2">Deixar uma mensagem para os noivos (Opcional)</label>
+                    <textarea id="buyer-message-input" rows="3" placeholder="Sua mensagem de carinho para Giovanna e Caio..." 
+                        class="w-full px-4 py-3 bg-white border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none"></textarea>
+                </div>
+
+                <div class="p-3.5 bg-honeysoft/50 border border-sunflower/30 rounded-2xl flex items-start gap-3">
+                    <input type="checkbox" id="confirm-purchased-check" class="mt-0.5 accent-amber w-4 h-4" checked>
+                    <label for="confirm-purchased-check" class="text-xs text-espresso leading-snug cursor-pointer">
+                        Confirmo que já comprei ou vou comprar este item para garantir que a lista fique atualizada!
+                    </label>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeGiftModal()" class="w-1/2 py-3 border border-sand text-taupe rounded-2xl font-semibold text-xs hover:bg-sand/30 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="w-1/2 py-3 sun-gradient-btn text-warmwhite rounded-2xl font-bold text-xs shadow-md transition">
+                        Confirmar Presente
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Admin Add/Edit Item Modal -->
+    <div id="item-admin-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-espresso/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-warmwhite rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl max-h-[90vh] overflow-y-auto space-y-6 border border-sand">
+            <div class="flex items-center justify-between border-b pb-4 border-sand/60">
+                <h3 id="admin-modal-title" class="font-serif-title font-bold text-lg text-espresso">Adicionar Item</h3>
+                <button onclick="closeAdminModal()" class="text-taupe hover:text-espresso p-2 text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="admin-item-form" onsubmit="handleAdminFormSubmit(event)" class="space-y-4">
+                <input type="hidden" id="admin-item-id">
+
+                <div>
+                    <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Nome do Item *</label>
+                    <input type="text" id="admin-title" required placeholder="Ex: Jogo de Panelas Antiaderente" 
+                        class="w-full px-4 py-2.5 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Categoria *</label>
+                        <select id="admin-category" required class="w-full px-3 py-2.5 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none bg-white">
+                            <option value="Cozinha">Cozinha</option>
+                            <option value="Eletrodomésticos">Eletrodomésticos</option>
+                            <option value="Quarto">Quarto</option>
+                            <option value="Banheiro">Banheiro</option>
+                            <option value="Sala de Estar">Sala de Estar</option>
+                            <option value="Lavanderia">Lavanderia</option>
+                            <option value="Mesa e Banho">Mesa e Banho</option>
+                            <option value="Decoração">Decoração</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Valor Estimado (R$)</label>
+                        <input type="number" step="0.01" id="admin-estimated-price" placeholder="0.00" 
+                            class="w-full px-4 py-2.5 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Link de Sugestão de Compra (URL)</label>
+                    <input type="url" id="admin-link" placeholder="https://www.amazon.com.br/..." 
+                        class="w-full px-4 py-2.5 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                </div>
+
+                <div class="pt-3 border-t border-sand/60">
+                    <p class="text-xs font-bold text-amber uppercase tracking-wider mb-3">Status de Compra & Quem Deu</p>
+
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                            <label class="block text-xs font-medium text-taupe mb-1">Comprado por</label>
+                            <select id="admin-buyer-type" onchange="toggleBuyerInputs()" class="w-full px-3 py-2 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none bg-white">
+                                <option value="none">Disponível (Ninguém)</option>
+                                <option value="guest">Convidado</option>
+                                <option value="noivos">Noivos (Giovanna & Caio)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-taupe mb-1">Valor Real Pago (R$)</label>
+                            <input type="number" step="0.01" id="admin-actual-price" placeholder="0.00" 
+                                class="w-full px-4 py-2 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div id="buyer-name-field-container" class="hidden">
+                        <label class="block text-xs font-medium text-taupe mb-1">Nome de quem presenteou</label>
+                        <input type="text" id="admin-buyer-name" placeholder="Nome do Convidado" 
+                            class="w-full px-4 py-2 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-4 border-t border-sand/60">
+                    <button type="button" onclick="closeAdminModal()" class="w-1/2 py-2.5 border border-sand text-taupe rounded-xl font-semibold text-xs hover:bg-sand/30 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="w-1/2 py-2.5 sun-gradient-btn text-warmwhite rounded-xl font-bold text-xs shadow-md transition">
+                        Salvar Item
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Admin Passcode Login Modal -->
+    <div id="passcode-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-espresso/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-warmwhite rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center space-y-5 border border-sand">
+            <div class="w-12 h-12 bg-honeysoft text-amber border border-sunflower/30 rounded-2xl flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+                <h3 class="font-serif-title font-bold text-lg text-espresso">Modo Noivos</h3>
+                <p class="text-xs text-taupe mt-1 leading-relaxed">Área restrita de gestão para Giovanna & Caio. Digite sua senha de acesso:</p>
+            </div>
+
+            <form onsubmit="verifyAdminPasscode(event)" class="space-y-4">
+                <input type="password" id="passcode-input" placeholder="Digite a senha" maxlength="8" autofocus
+                    class="w-full px-4 py-3 text-center border border-sand rounded-2xl text-lg font-bold tracking-widest focus:ring-2 focus:ring-sunflower/40 focus:outline-none bg-white">
+                
+                <div class="flex gap-2">
+                    <button type="button" onclick="closePasscodeModal()" class="w-1/2 py-2.5 border border-sand text-taupe rounded-xl text-xs font-bold">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="w-1/2 py-2.5 sun-gradient-btn text-warmwhite rounded-xl text-xs font-bold transition">
+                        Entrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 4: Delete Confirmation Modal -->
+    <div id="confirm-delete-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-espresso/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-warmwhite rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center space-y-5 border border-sand">
+            <div class="w-12 h-12 bg-amber/10 text-amber rounded-2xl flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <div>
+                <h3 class="font-serif-title font-bold text-lg text-espresso">Remover Item</h3>
+                <p class="text-xs text-taupe mt-1 leading-relaxed">Tem certeza que deseja remover este presente da lista?</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="closeDeleteModal()" class="w-1/2 py-2.5 border border-sand text-taupe rounded-xl text-xs font-bold">
+                    Cancelar
+                </button>
+                <button onclick="executeDeleteItem()" class="w-1/2 py-2.5 bg-amber text-warmwhite rounded-xl text-xs font-bold hover:bg-espresso transition">
+                    Sim, Remover
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: Admin Edit Address Modal -->
+    <div id="address-admin-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-espresso/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-warmwhite rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl space-y-5 border border-sand">
+            <div class="flex items-center justify-between border-b pb-4 border-sand/60">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-honeysoft text-amber border border-sunflower/30 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif-title font-bold text-lg text-espresso">Editar Endereço</h3>
+                        <p class="text-xs text-taupe">Configure o endereço de entrega dos noivos</p>
+                    </div>
+                </div>
+                <button onclick="closeAddressModal()" class="text-taupe hover:text-espresso p-2 text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleAddressFormSubmit(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Destinatários</label>
+                    <input type="text" id="edit-recipient" required placeholder="Giovanna Pinho e Caio Moura" 
+                        class="w-full px-4 py-2 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Rua / Logradouro</label>
+                    <input type="text" id="edit-street" required placeholder="Rua das Flores" 
+                        class="w-full px-4 py-2 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Número / Compl.</label>
+                        <input type="text" id="edit-number" required placeholder="N° 123 - Apto 402" 
+                            class="w-full px-4 py-2 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Bairro</label>
+                        <input type="text" id="edit-neighborhood" required placeholder="Jardim" 
+                            class="w-full px-4 py-2 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">Cidade / UF</label>
+                        <input type="text" id="edit-city" placeholder="São Paulo / SP" 
+                            class="w-full px-4 py-2 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-espresso uppercase tracking-wider mb-1">CEP</label>
+                        <input type="text" id="edit-cep" required placeholder="00000-000" 
+                            class="w-full px-4 py-2 border border-sand rounded-xl text-sm focus:ring-2 focus:ring-sunflower/40 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-3 border-t border-sand/60">
+                    <button type="button" onclick="closeAddressModal()" class="w-1/2 py-2.5 border border-sand text-taupe rounded-xl font-semibold text-xs hover:bg-sand/30 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="w-1/2 py-2.5 sun-gradient-btn text-warmwhite rounded-xl font-bold text-xs shadow-md transition">
+                        Salvar Endereço
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Logic Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            onSnapshot, 
+            addDoc, 
+            updateDoc, 
+            setDoc,
+            deleteDoc, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Hardcoded Embedded Firebase Credentials
+        const firebaseConfig = {
+            apiKey: "AIzaSyAnlV_b34OzJCOOC5W7SKIMrSpbDs0FQmw",
+            authDomain: "lista-da-casa-nova.firebaseapp.com",
+            databaseURL: "https://lista-da-casa-nova-default-rtdb.firebaseio.com",
+            projectId: "lista-da-casa-nova",
+            storageBucket: "lista-da-casa-nova.firebasestorage.app",
+            messagingSenderId: "997953845692",
+            appId: "1:997953845692:web:b4d11c400bdceba9d813b9"
+        };
+
+        // Global Application State
+        window.appState = {
+            isAdmin: false,
+            adminPasscode: '0409', // Senha de acesso dos noivos
+            items: [],
+            address: {
+                recipient: 'Giovanna & Caio',
+                street: '',
+                number: '',
+                neighborhood: '',
+                city: '',
+                cep: ''
+            },
+            activeCategory: 'Todos',
+            activeStatus: 'all',
+            searchQuery: '',
+            db: null,
+            useFirebase: false,
+            pendingDeleteId: null,
+            appId: 'lista-da-casa-nova'
+        };
+
+        // Categories
+        const CATEGORIES = [
+            'Todos',
+            'Cozinha',
+            'Eletrodomésticos',
+            'Quarto',
+            'Banheiro',
+            'Sala de Estar',
+            'Lavanderia',
+            'Mesa e Banho',
+            'Decoração',
+            'Outros'
+        ];
+
+        // Starter Gifts Base (Nenhum item de exemplo inserido)
+        const INITIAL_SEED_GIFTS = [];
+
+        async function setupFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                
+                await signInAnonymously(auth);
+
+                const db = getFirestore(app);
+                window.appState.db = db;
+                window.appState.useFirebase = true;
+                
+                const giftsRef = collection(db, 'artifacts', window.appState.appId, 'public', 'data', 'gifts');
+                const addressRef = doc(db, 'artifacts', window.appState.appId, 'public', 'data', 'config', 'deliveryAddress');
+                
+                // Listen to Address changes
+                onSnapshot(addressRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        window.appState.address = { ...window.appState.address, ...docSnap.data() };
+                        renderAddress();
+                    }
+                });
+
+                // Listen to Gifts snapshot
+                onSnapshot(giftsRef, (snapshot) => {
+                    let loadedItems = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+
+                    window.appState.items = loadedItems;
+                    updateSyncBadge(true);
+                    renderApp();
+                }, (error) => {
+                    console.error("Firestore snapshot error:", error);
+                    updateSyncBadge(false, "Modo Local Ativo");
+                    fallbackToLocalStorage();
+                });
+
+            } catch (err) {
+                console.error("Failed to initialize Firebase:", err);
+                updateSyncBadge(false, "Modo Local Ativo");
+                fallbackToLocalStorage();
+            }
+        }
+
+        function fallbackToLocalStorage() {
+            window.appState.useFirebase = false;
+            const localData = localStorage.getItem('casa_nova_items_v4');
+            const localAddr = localStorage.getItem('casa_nova_address_v2');
+
+            if (localAddr) {
+                try { window.appState.address = JSON.parse(localAddr); } catch(e){}
+            }
+
+            if (localData) {
+                try {
+                    window.appState.items = JSON.parse(localData);
+                } catch(e) {
+                    window.appState.items = [];
+                }
+            } else {
+                window.appState.items = [];
+                saveLocalState();
+            }
+            renderAddress();
+            renderApp();
+        }
+
+        function saveLocalState() {
+            if (!window.appState.useFirebase) {
+                localStorage.setItem('casa_nova_items_v4', JSON.stringify(window.appState.items));
+                localStorage.setItem('casa_nova_address_v2', JSON.stringify(window.appState.address));
+            }
+        }
+
+        function updateSyncBadge(connected, message = '') {
+            const badge = document.getElementById('sync-status-badge');
+            if (!badge) return;
+            if (connected) {
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span><span class="text-emerald-700 font-semibold">Conectado e Sincronizado</span>`;
+            } else {
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber inline-block"></span><span class="text-amber font-semibold">${escapeHtml(message || 'Modo Armazenamento Local')}</span>`;
+            }
+        }
+
+        function renderApp() {
+            renderCategories();
+            renderGiftsGrid();
+            updateFinancialsAndProgress();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categories-tabs-container');
+            if (!container) return;
+
+            container.innerHTML = CATEGORIES.map(cat => {
+                const isActive = window.appState.activeCategory === cat;
+                const activeClass = isActive 
+                    ? 'bg-amber text-warmwhite font-bold shadow-sm' 
+                    : 'bg-warmwhite text-espresso hover:bg-honeysoft/60 border border-sand';
+                return `
+                    <button onclick="setCategory('${escapeHtml(cat)}')" 
+                        class="px-4 py-2 rounded-full text-xs transition-all whitespace-nowrap ${activeClass}">
+                        ${escapeHtml(cat)}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderGiftsGrid() {
+            const grid = document.getElementById('gifts-grid');
+            const emptyState = document.getElementById('empty-state');
+            if (!grid) return;
+
+            let items = window.appState.items || [];
+
+            // Filter by Category
+            if (window.appState.activeCategory !== 'Todos') {
+                items = items.filter(i => i.category === window.appState.activeCategory);
+            }
+
+            // Filter by Status
+            if (window.appState.activeStatus === 'available') {
+                items = items.filter(i => i.status === 'available');
+            } else if (window.appState.activeStatus === 'claimed') {
+                items = items.filter(i => i.status === 'claimed');
+            }
+
+            // Filter by Search
+            if (window.appState.searchQuery.trim() !== '') {
+                const q = window.appState.searchQuery.toLowerCase();
+                items = items.filter(i => 
+                    (i.title && i.title.toLowerCase().includes(q)) || 
+                    (i.category && i.category.toLowerCase().includes(q)) ||
+                    (i.buyerName && i.buyerName.toLowerCase().includes(q))
+                );
+            }
+
+            // Update status counters
+            const allCount = (window.appState.items || []).length;
+            const availCount = (window.appState.items || []).filter(i => i.status === 'available').length;
+            const claimedCount = (window.appState.items || []).filter(i => i.status === 'claimed').length;
+
+            const elAll = document.getElementById('count-status-all');
+            if (elAll) elAll.innerText = allCount;
+            const elAvail = document.getElementById('count-status-available');
+            if (elAvail) elAvail.innerText = availCount;
+            const elClaimed = document.getElementById('count-status-claimed');
+            if (elClaimed) elClaimed.innerText = claimedCount;
+
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                if (emptyState) emptyState.classList.remove('hidden');
+                return;
+            }
+
+            if (emptyState) emptyState.classList.add('hidden');
+
+            grid.innerHTML = items.map(item => {
+                const isClaimed = item.status === 'claimed';
+                const isBoughtByNoivos = item.buyerType === 'noivos';
+                const isAdmin = window.appState.isAdmin;
+
+                let cardClass = "bg-warmwhite border-sand hover:border-sunflower/60";
+                let statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-honeysoft text-amber border border-sunflower/30"><i class="fa-solid fa-gift mr-1"></i> Disponível</span>`;
+
+                if (isClaimed) {
+                    if (isBoughtByNoivos) {
+                        cardClass = "card-claimed-noivos border-taupe/40";
+                        statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-taupe/20 text-espresso border border-taupe/30"><i class="fa-solid fa-house-heart mr-1"></i> Comprado pelos Noivos</span>`;
+                    } else {
+                        cardClass = "card-claimed-guest border-amber/40";
+                        statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber text-warmwhite shadow-sm"><i class="fa-solid fa-circle-check mr-1"></i> Já Foi Ganho!</span>`;
+                    }
+                }
+
+                const buyerDisplay = isClaimed && item.buyerName 
+                    ? `<div class="mt-2 text-xs font-bold text-espresso bg-white/70 p-2 rounded-xl border border-sand/60">
+                        <span class="text-taupe font-normal text-[11px]">Presenteado por:</span> ${escapeHtml(item.buyerName)}
+                       </div>` 
+                    : '';
+
+                const adminActions = isAdmin ? `
+                    <div class="flex items-center gap-1.5 pt-2 border-t border-sand/40">
+                        <button onclick="openEditItemModal('${item.id}')" class="px-2.5 py-1 text-xs font-bold text-taupe hover:text-espresso bg-sand/30 hover:bg-sand/60 rounded-lg transition">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </button>
+                        <button onclick="askDeleteItem('${item.id}')" class="px-2.5 py-1 text-xs font-bold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition">
+                            <i class="fa-solid fa-trash-can"></i> Excluir
+                        </button>
+                    </div>
+                ` : '';
+
+                const shopLinkBtn = item.link ? `
+                    <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-espresso bg-honeysoft hover:bg-honey/40 border border-sunflower/40 rounded-xl transition w-full">
+                        <i class="fa-solid fa-up-right-from-square text-amber text-[10px]"></i> Ver Sugestão de Loja
+                    </a>
+                ` : '';
+
+                let actionBtn = '';
+                if (!isClaimed) {
+                    actionBtn = `
+                        <button onclick="openGiftModal('${item.id}')" class="w-full py-2.5 sun-gradient-btn text-warmwhite rounded-xl text-xs font-bold shadow-sm transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-gift"></i> Presentear / Comprei
+                        </button>
+                    `;
+                } else if (isAdmin) {
+                    actionBtn = `
+                        <button onclick="openGiftModal('${item.id}')" class="w-full py-2 bg-sand text-espresso rounded-xl text-xs font-semibold hover:bg-sand/70 transition">
+                            Alterar Detalhes
+                        </button>
+                    `;
+                } else {
+                    actionBtn = `
+                        <div class="w-full py-2 bg-sand/40 text-taupe rounded-xl text-xs font-medium text-center">
+                            <i class="fa-solid fa-check text-amber mr-1"></i> Reservado com carinho
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="gift-card rounded-3xl p-5 border ${cardClass} shadow-sm flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-[11px] font-bold text-taupe uppercase tracking-wider">${escapeHtml(item.category || 'Outros')}</span>
+                                ${statusBadge}
+                            </div>
+
+                            <h4 class="font-serif-title font-bold text-base text-espresso leading-snug">${escapeHtml(item.title)}</h4>
+
+                            <!-- Sigilo dos Valores: Preço visível APENAS para os noivos no Modo Noivos -->
+                            ${isAdmin && item.estimatedPrice ? `<p class="text-sm font-bold text-amber">${formatCurrency(item.estimatedPrice)}</p>` : ''}
+
+                            ${buyerDisplay}
+
+                            ${item.buyerMessage ? `
+                                <p class="text-xs text-taupe italic bg-white/60 p-2.5 rounded-xl border border-sand/40">
+                                    "${escapeHtml(item.buyerMessage)}"
+                                </p>
+                            ` : ''}
+                        </div>
+
+                        <div class="space-y-2 pt-2">
+                            ${shopLinkBtn}
+                            ${actionBtn}
+                            ${adminActions}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateFinancialsAndProgress() {
+            const items = window.appState.items || [];
+            const totalCount = items.length;
+            const claimedItems = items.filter(i => i.status === 'claimed');
+            const claimedCount = claimedItems.length;
+
+            const percent = totalCount > 0 ? Math.round((claimedCount / totalCount) * 100) : 0;
+            const progText = document.getElementById('gifts-progress-text');
+            const progBar = document.getElementById('gifts-progress-bar');
+            
+            if (progText) progText.innerText = `${claimedCount} de ${totalCount} Garantidos (${percent}%)`;
+            if (progBar) progBar.style.width = `${percent}%`;
+
+            let totalEstimated = 0;
+            let totalBoughtNoivos = 0;
+            let countNoivos = 0;
+            let totalGiftedGuests = 0;
+            let countGuests = 0;
+
+            items.forEach(i => {
+                const est = parseFloat(i.estimatedPrice) || 0;
+                const act = parseFloat(i.actualPrice) || est;
+
+                totalEstimated += est;
+
+                if (i.status === 'claimed') {
+                    if (i.buyerType === 'noivos') {
+                        totalBoughtNoivos += act;
+                        countNoivos++;
+                    } else {
+                        totalGiftedGuests += act;
+                        countGuests++;
+                    }
+                }
+            });
+
+            const elEst = document.getElementById('stat-total-estimated');
+            if (elEst) elEst.innerText = formatCurrency(totalEstimated);
+
+            const elNoivos = document.getElementById('stat-bought-noivos');
+            if (elNoivos) elNoivos.innerText = formatCurrency(totalBoughtNoivos);
+
+            const elCntNoivos = document.getElementById('stat-count-noivos');
+            if (elCntNoivos) elCntNoivos.innerText = `${countNoivos} itens`;
+
+            const elGuests = document.getElementById('stat-gifted-guests');
+            if (elGuests) elGuests.innerText = formatCurrency(totalGiftedGuests);
+
+            const elCntGuests = document.getElementById('stat-count-guests');
+            if (elCntGuests) elCntGuests.innerText = `${countGuests} presentes`;
+
+            const elActualSpent = document.getElementById('stat-total-actual-spent');
+            if (elActualSpent) elActualSpent.innerText = formatCurrency(totalBoughtNoivos);
+        }
+
+        window.openGiftModal = function(id) {
+            const item = window.appState.items.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('claim-item-id').value = item.id;
+            
+            const infoContainer = document.getElementById('modal-item-info');
+            if (infoContainer) {
+                infoContainer.innerHTML = `
+                    <div>
+                        <span class="text-[10px] font-bold text-taupe uppercase">${escapeHtml(item.category)}</span>
+                        <h4 class="font-serif-title font-bold text-sm text-espresso">${escapeHtml(item.title)}</h4>
+                        ${window.appState.isAdmin && item.estimatedPrice ? `<p class="text-xs font-bold text-amber">${formatCurrency(item.estimatedPrice)}</p>` : ''}
+                    </div>
+                `;
+            }
+
+            document.getElementById('buyer-name-input').value = item.buyerName || '';
+            document.getElementById('buyer-message-input').value = item.buyerMessage || '';
+
+            showModal('gift-modal');
+        };
+
+        window.closeGiftModal = function() {
+            hideModal('gift-modal');
+        };
+
+        window.handleClaimSubmit = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('claim-item-id').value;
+            const buyerName = document.getElementById('buyer-name-input').value.trim();
+            const buyerMessage = document.getElementById('buyer-message-input').value.trim();
+
+            if (!buyerName) {
+                showToast("Por favor, digite seu nome!", "error");
+                return;
+            }
+
+            const updateData = {
+                status: 'claimed',
+                buyerType: 'guest',
+                buyerName: buyerName,
+                buyerMessage: buyerMessage
+            };
+
+            try {
+                await updateItemInStore(id, updateData);
+                closeGiftModal();
+                showToast(`Muito obrigado, ${buyerName}! Presente confirmado com sucesso ❤️`, "success");
+            } catch (err) {
+                console.error("Error claiming gift:", err);
+                showToast("Erro ao confirmar presente.", "error");
+            }
+        };
+
+        function renderAddress() {
+            const addr = window.appState.address;
+            
+            const recipientEl = document.getElementById('disp-recipient');
+            if (recipientEl) recipientEl.innerText = addr.recipient || 'Giovanna & Caio';
+            
+            const streetAndNumEl = document.getElementById('disp-street-and-num');
+            if (streetAndNumEl) {
+                const streetStr = addr.street || '';
+                const numStr = addr.number ? `, ${addr.number}` : '';
+                streetAndNumEl.innerText = `${streetStr}${numStr}`.trim() || 'Endereço a definir';
+            }
+            
+            const neighborhoodEl = document.getElementById('disp-neighborhood');
+            if (neighborhoodEl) {
+                const neighStr = addr.neighborhood || '';
+                const cityStr = addr.city ? ` - ${addr.city}` : '';
+                neighborhoodEl.innerText = `${neighStr}${cityStr}`.trim() || '';
+            }
+
+            const cepEl = document.getElementById('disp-cep');
+            if (cepEl) cepEl.innerText = addr.cep || '-';
+        }
+
+        window.openAddressModal = function() {
+            const addr = window.appState.address;
+            document.getElementById('edit-recipient').value = addr.recipient || '';
+            document.getElementById('edit-street').value = addr.street || '';
+            document.getElementById('edit-number').value = addr.number || '';
+            document.getElementById('edit-neighborhood').value = addr.neighborhood || '';
+            document.getElementById('edit-city').value = addr.city || '';
+            document.getElementById('edit-cep').value = addr.cep || '';
+            showModal('address-admin-modal');
+        };
+
+        window.closeAddressModal = function() {
+            hideModal('address-admin-modal');
+        };
+
+        window.handleAddressFormSubmit = async function(e) {
+            e.preventDefault();
+            const newAddress = {
+                recipient: document.getElementById('edit-recipient').value.trim(),
+                street: document.getElementById('edit-street').value.trim(),
+                number: document.getElementById('edit-number').value.trim(),
+                neighborhood: document.getElementById('edit-neighborhood').value.trim(),
+                city: document.getElementById('edit-city').value.trim(),
+                cep: document.getElementById('edit-cep').value.trim()
+            };
+
+            window.appState.address = newAddress;
+            renderAddress();
+
+            if (window.appState.useFirebase && window.appState.db) {
+                try {
+                    const addressRef = doc(window.appState.db, 'artifacts', window.appState.appId, 'public', 'data', 'config', 'deliveryAddress');
+                    await setDoc(addressRef, newAddress, { merge: true });
+                    showToast("Endereço salvo com sucesso!", "success");
+                } catch(err) {
+                    console.error("Address save error:", err);
+                    showToast("Erro ao salvar endereço.", "error");
+                }
+            } else {
+                saveLocalState();
+                showToast("Endereço atualizado localmente!", "success");
+            }
+
+            closeAddressModal();
+        };
+
+        window.copyAddressField = function(fieldKey, label) {
+            const addr = window.appState.address;
+            let textToCopy = '';
+
+            switch(fieldKey) {
+                case 'recipient':
+                    textToCopy = addr.recipient || 'Giovanna & Caio';
+                    break;
+                case 'street_and_num':
+                    textToCopy = `${addr.street || ''}${addr.number ? ', ' + addr.number : ''}`;
+                    break;
+                case 'neighborhood':
+                    textToCopy = `${addr.neighborhood || ''}${addr.city ? ' - ' + addr.city : ''}`;
+                    break;
+                case 'cep':
+                    textToCopy = addr.cep || '';
+                    break;
+                default:
+                    textToCopy = '';
+            }
+
+            if (!textToCopy) {
+                showToast("Campo em branco!", "error");
+                return;
+            }
+
+            copyToClipboard(textToCopy);
+            showToast(`${label} copiado! (${textToCopy})`, "success");
+        };
+
+        window.copyAddressToClipboard = function(type = 'full') {
+            const addr = window.appState.address;
+            const fullText = `Destinatário: ${addr.recipient}\n${addr.street}, ${addr.number}\n${addr.neighborhood}${addr.city ? ' - ' + addr.city : ''}\nCEP: ${addr.cep}`;
+            copyToClipboard(fullText);
+            showToast("Endereço completo copiado com sucesso!", "success");
+        };
+
+        function copyToClipboard(text) {
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+        }
+
+        window.toggleAdminPrompt = function() {
+            if (window.appState.isAdmin) {
+                window.appState.isAdmin = false;
+                document.getElementById('discreet-finance-panel').classList.add('hidden');
+                document.getElementById('quick-add-btn').classList.add('hidden');
+                document.getElementById('quick-add-btn').classList.remove('flex');
+                document.getElementById('edit-address-btn').classList.add('hidden');
+                document.getElementById('admin-icon').className = "fa-solid fa-lock";
+                document.getElementById('admin-btn-text').innerText = "Modo Noivos";
+                showToast("Modo Noivos desativado.", "info");
+                renderApp();
+            } else {
+                showModal('passcode-modal');
+            }
+        };
+
+        window.verifyAdminPasscode = function(e) {
+            e.preventDefault();
+            const pass = document.getElementById('passcode-input').value;
+            if (pass === window.appState.adminPasscode) {
+                window.appState.isAdmin = true;
+                document.getElementById('discreet-finance-panel').classList.remove('hidden');
+                document.getElementById('quick-add-btn').classList.remove('hidden');
+                document.getElementById('quick-add-btn').classList.add('flex');
+                document.getElementById('edit-address-btn').classList.remove('hidden');
+                document.getElementById('admin-icon').className = "fa-solid fa-lock-open text-sunflower";
+                document.getElementById('admin-btn-text').innerText = "Noivos (Ativo)";
+                hideModal('passcode-modal');
+                document.getElementById('passcode-input').value = '';
+                showToast("Bem-vindos, Giovanna & Caio! Painel ativado.", "success");
+                renderApp();
+            } else {
+                showToast("Senha incorreta!", "error");
+            }
+        };
+
+        window.closePasscodeModal = function() {
+            hideModal('passcode-modal');
+        };
+
+        window.openAddItemModal = function() {
+            document.getElementById('admin-modal-title').innerText = "Adicionar Novo Item";
+            document.getElementById('admin-item-id').value = '';
+            document.getElementById('admin-title').value = '';
+            document.getElementById('admin-category').value = 'Cozinha';
+            document.getElementById('admin-estimated-price').value = '';
+            document.getElementById('admin-link').value = '';
+            document.getElementById('admin-buyer-type').value = 'none';
+            document.getElementById('admin-actual-price').value = '';
+            document.getElementById('admin-buyer-name').value = '';
+            toggleBuyerInputs();
+            showModal('item-admin-modal');
+        };
+
+        window.openEditItemModal = function(id) {
+            const item = window.appState.items.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('admin-modal-title').innerText = "Editar Item";
+            document.getElementById('admin-item-id').value = item.id;
+            document.getElementById('admin-title').value = item.title || '';
+            document.getElementById('admin-category').value = item.category || 'Cozinha';
+            document.getElementById('admin-estimated-price').value = item.estimatedPrice || '';
+            document.getElementById('admin-link').value = item.link || '';
+            document.getElementById('admin-buyer-type').value = item.buyerType || (item.status === 'claimed' ? 'guest' : 'none');
+            document.getElementById('admin-actual-price').value = item.actualPrice || '';
+            document.getElementById('admin-buyer-name').value = item.buyerName || '';
+
+            toggleBuyerInputs();
+            showModal('item-admin-modal');
+        };
+
+        window.closeAdminModal = function() {
+            hideModal('item-admin-modal');
+        };
+
+        window.toggleBuyerInputs = function() {
+            const buyerType = document.getElementById('admin-buyer-type').value;
+            const nameContainer = document.getElementById('buyer-name-field-container');
+            if (buyerType === 'guest') {
+                nameContainer.classList.remove('hidden');
+            } else {
+                nameContainer.classList.add('hidden');
+            }
+        };
+
+        window.handleAdminFormSubmit = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('admin-item-id').value;
+            const title = document.getElementById('admin-title').value.trim();
+            const category = document.getElementById('admin-category').value;
+            const estimatedPrice = parseFloat(document.getElementById('admin-estimated-price').value) || 0;
+            const link = document.getElementById('admin-link').value.trim();
+            const buyerType = document.getElementById('admin-buyer-type').value;
+            const actualPrice = parseFloat(document.getElementById('admin-actual-price').value) || 0;
+            const buyerName = document.getElementById('admin-buyer-name').value.trim();
+
+            const status = buyerType === 'none' ? 'available' : 'claimed';
+
+            const itemData = {
+                title,
+                category,
+                estimatedPrice,
+                actualPrice,
+                link,
+                status,
+                buyerType,
+                buyerName: buyerType === 'noivos' ? 'Giovanna & Caio' : buyerName
+            };
+
+            try {
+                if (id) {
+                    await updateItemInStore(id, itemData);
+                    showToast("Item atualizado!", "success");
+                } else {
+                    await addItemToStore(itemData);
+                    showToast("Item adicionado à lista!", "success");
+                }
+                closeAdminModal();
+            } catch (err) {
+                console.error(err);
+                showToast("Erro ao salvar item.", "error");
+            }
+        };
+
+        async function addItemToStore(itemData) {
+            if (window.appState.useFirebase && window.appState.db) {
+                const giftsRef = collection(window.appState.db, 'artifacts', window.appState.appId, 'public', 'data', 'gifts');
+                await addDoc(giftsRef, { ...itemData, createdAt: serverTimestamp() });
+            } else {
+                const newItem = { id: 'local_' + Date.now(), ...itemData };
+                window.appState.items.push(newItem);
+                saveLocalState();
+                renderApp();
+            }
+        }
+
+        async function updateItemInStore(id, updateData) {
+            if (window.appState.useFirebase && window.appState.db) {
+                const itemRef = doc(window.appState.db, 'artifacts', window.appState.appId, 'public', 'data', 'gifts', id);
+                await updateDoc(itemRef, updateData);
+            } else {
+                const index = window.appState.items.findIndex(i => i.id === id);
+                if (index !== -1) {
+                    window.appState.items[index] = { ...window.appState.items[index], ...updateData };
+                    saveLocalState();
+                    renderApp();
+                }
+            }
+        }
+
+        window.askDeleteItem = function(id) {
+            window.appState.pendingDeleteId = id;
+            showModal('confirm-delete-modal');
+        };
+
+        window.closeDeleteModal = function() {
+            window.appState.pendingDeleteId = null;
+            hideModal('confirm-delete-modal');
+        };
+
+        window.executeDeleteItem = async function() {
+            const id = window.appState.pendingDeleteId;
+            if (!id) return;
+
+            try {
+                if (window.appState.useFirebase && window.appState.db) {
+                    const itemRef = doc(window.appState.db, 'artifacts', window.appState.appId, 'public', 'data', 'gifts', id);
+                    await deleteDoc(itemRef);
+                } else {
+                    window.appState.items = window.appState.items.filter(i => i.id !== id);
+                    saveLocalState();
+                    renderApp();
+                }
+                showToast("Item removido com sucesso.", "info");
+            } catch (err) {
+                console.error("Delete error:", err);
+                showToast("Erro ao excluir item.", "error");
+            } finally {
+                closeDeleteModal();
+            }
+        };
+
+        window.setCategory = function(cat) {
+            window.appState.activeCategory = cat;
+            renderApp();
+        };
+
+        window.setStatusFilter = function(status) {
+            window.appState.activeStatus = status;
+            
+            document.querySelectorAll('.status-filter-btn').forEach(btn => {
+                btn.className = "status-filter-btn px-4 py-2 text-xs font-semibold rounded-full border border-sand bg-warmwhite text-espresso hover:bg-honeysoft transition";
+            });
+
+            const activeBtn = document.getElementById(`filter-status-${status}`);
+            if (activeBtn) {
+                activeBtn.className = "status-filter-btn active-status-filter px-4 py-2 text-xs font-bold rounded-full border border-amber bg-amber text-warmwhite transition";
+            }
+
+            renderApp();
+        };
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            window.appState.searchQuery = e.target.value;
+            renderApp();
+        });
+
+        window.copyShareLink = function() {
+            const url = window.location.href;
+            copyToClipboard(url);
+            showToast("Link da lista copiado! Envie para seus convidados.", "success");
+        };
+
+        function showModal(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.remove('hidden');
+            setTimeout(() => {
+                el.classList.remove('opacity-0');
+                if (el.children[0]) el.children[0].classList.remove('scale-95');
+            }, 10);
+        }
+
+        function hideModal(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.add('opacity-0');
+            if (el.children[0]) el.children[0].classList.add('scale-95');
+            setTimeout(() => {
+                el.classList.add('hidden');
+            }, 300);
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = "bg-espresso text-warmwhite";
+            let icon = '<i class="fa-solid fa-info-circle text-honey"></i>';
+
+            if (type === 'success') {
+                bgClass = "bg-amber text-warmwhite";
+                icon = '<i class="fa-solid fa-circle-check text-honey"></i>';
+            } else if (type === 'error') {
+                bgClass = "bg-espresso text-warmwhite";
+                icon = '<i class="fa-solid fa-triangle-exclamation text-sunflower"></i>';
+            }
+
+            toast.className = `${bgClass} p-4 rounded-2xl shadow-xl text-xs font-semibold flex items-center gap-3 transition-all duration-300 transform translate-y-2 pointer-events-auto border border-sand/40`;
+            toast.innerHTML = `${icon} <span>${escapeHtml(message)}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function formatCurrency(val) {
+            const num = parseFloat(val) || 0;
+            return 'R$ ' + num.toFixed(2).replace('.', ',');
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, function(m) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+            });
+        }
+
+        // Initialize App on DOM load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderAddress();
+            setupFirebase();
+        });
+    </script>
+</body>
+</html>
